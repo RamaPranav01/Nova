@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="URL_TO_YOUR_NOVA_LOGO_OR_BANNER_HERE" alt="Nova Gateway Logo" width="700"/>
-</p>
-
 <h1 align="center">Nova - The Universal Trust Layer for AI</h1>
 
 <p align="center">
@@ -40,17 +36,17 @@ Nova is architected as a modular platform, allowing us to layer on increasingly 
 
 | Category               | Feature                               | Status      | Description                                                                                             |
 | ---------------------- | ------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------- |
-| 🛡️ **Core Security**     | **Prompt Injection Defense**          | ✅ V1       | Uses an LLM critic to detect and block malicious prompts designed to hijack the AI.                       |
-|                        | **Dynamic Threat Freezing**           | ✅ V2       | Learns from new attacks; allows human mods to "freeze" a threat vector for instant future blocking.    |
+| 🛡️ **Core Security**     | **Prompt Injection Defense**          | 🚧 V1       | Uses an LLM critic to detect and block malicious prompts designed to hijack the AI.                       |
+|                        | **Dynamic Threat Freezing**           | 🚧 V2       | Learns from new attacks; allows human mods to "freeze" a threat vector for instant future blocking.    |
 |                        | **PII & Data Bleed Detection**        | 🚧 V3       | Scans prompts for sensitive data (PII, custom keywords) to prevent leaks to third-party models.      |
 |                        | **Deepfake & Synthetic Media Scan**   | 🚧 V3       | Integrates specialized APIs to detect AI-generated images and audio with high accuracy.                 |
-| 🌐 **Trust & Reliability** | **Hallucination & Citation Check**    | ✅ V2       | Verifies factual claims and flags responses with fabricated sources.                                    |
+| 🌐 **Trust & Reliability** | **Hallucination & Citation Check**    | 🚧 V2       | Verifies factual claims and flags responses with fabricated sources.                                    |
 |                        | **Source Reputation & Rumor Check**   | 🚧 V3       | Checks URLs against reputation services (e.g., NewsGuard) and cross-references claims with live web search results. |
 |                        | **Knowledge Base Grounding (RAG)**      | 🚧 V3       | Ensures AI responses are grounded *only* in user-provided documents for maximum accuracy.                 |
-| 📜 **Governance & Audit** | **Custom Policy Engine**              | ✅ V1       | Enforces user-defined ethical and brand policies (e.g., "no medical advice") in real-time.            |
-|                        | **Immutable Audit Logs**              | ✅ V2       | Creates a cryptographically-chained, tamper-proof log of every transaction for compliance.          |
-| ⚙️ **Performance**       | **Semantic Cache**                    | ✅ V2       | Drastically reduces cost & latency by serving cached responses for semantically similar prompts.        |
-|                        | **Analytics Dashboard**               | ✅ V2       | Provides rich visualizations of threats, costs, savings, and performance metrics.                       |
+| 📜 **Governance & Audit** | **Custom Policy Engine**              | 🚧 V1       | Enforces user-defined ethical and brand policies (e.g., "no medical advice") in real-time.            |
+|                        | **Immutable Audit Logs**              | 🚧 V2       | Creates a cryptographically-chained, tamper-proof log of every transaction for compliance.          |
+| ⚙️ **Performance**       | **Semantic Cache**                    | 🚧 V2       | Drastically reduces cost & latency by serving cached responses for semantically similar prompts.        |
+|                        | **Analytics Dashboard**               | 🚧 V2       | Provides rich visualizations of threats, costs, savings, and performance metrics.                       |
 
 **Deadline:** V1 - Mid August , V2 - Mid September , V3 - Mid October
 
