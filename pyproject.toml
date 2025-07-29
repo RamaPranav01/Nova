@@ -1,0 +1,20 @@
+[project]
+name = "nova"
+version = "0.1.0"
+description = "The Universal Trust Layer for AI"
+authors = [
+    {name= "Sanjana", email= "ranasanjana60@gmail.com"},
+    {name = "Rama Pranav",email = "gantiramapranav@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openai (>=1.97.1,<2.0.0)",
+    "pydantic (>=2.11.7,<3.0.0)",
+    "python-dotenv (>=1.1.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
