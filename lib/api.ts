@@ -144,6 +144,7 @@ export const chatAPI = {
   },
 
   // For the demo page - simulate Aegis processing
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   simulateAegisChat: async (message: string, _policy: string): Promise<ChatResponse> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));

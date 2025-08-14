@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Shield, AlertTriangle, CheckCircle, Send, Settings, Lock, Eye } from "lucide-react";
+import { Shield, AlertTriangle, CheckCircle, Send, Settings, Eye } from "lucide-react";
 import Link from "next/link";
 
 interface Message {
@@ -111,7 +111,7 @@ export default function DemoPage() {
     }, 1000);
   };
 
-  const checkForThreats = (message: string, policy: string): { blocked: boolean; warning: boolean; reason?: string } => {
+  const checkForThreats = (message: string, _policy: string): { blocked: boolean; warning: boolean; reason?: string } => {
     const lowerMessage = message.toLowerCase();
 
     // Check for medical advice requests
@@ -132,7 +132,7 @@ export default function DemoPage() {
     return { blocked: false, warning: false };
   };
 
-  const generateAIResponse = (message: string): string => {
+  const generateAIResponse = (_message: string): string => {
     const responses = [
       "I understand your request. Here's what I can tell you about that topic...",
       "That's an interesting question! Let me provide you with some helpful information...",
