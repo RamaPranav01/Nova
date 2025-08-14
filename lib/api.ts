@@ -144,7 +144,7 @@ export const chatAPI = {
   },
 
   // For the demo page - simulate Aegis processing
-  simulateAegisChat: async (message: string, policy: string): Promise<ChatResponse> => {
+  simulateAegisChat: async (message: string, _policy: string): Promise<ChatResponse> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -153,7 +153,7 @@ export const chatAPI = {
     let status: 'success' | 'blocked' | 'warning' = 'success';
     let reason: string | undefined;
     let threatDetected = false;
-    let policyViolations: string[] = [];
+    const policyViolations: string[] = [];
     
     // Check for medical advice
     if (lowerMessage.includes('medical') || lowerMessage.includes('diagnose') || lowerMessage.includes('treatment')) {
@@ -207,7 +207,7 @@ export const analyticsAPI = {
 
 // Logs API calls
 export const logsAPI = {
-  getLogs: async (page: number = 1, limit: number = 50, filters?: any): Promise<{
+  getLogs: async (page: number = 1, limit: number = 50, filters?: Record<string, string>): Promise<{
     logs: LogEntry[];
     total: number;
     page: number;
@@ -236,20 +236,31 @@ export const logsAPI = {
   },
 };
 
+// Policy types
+export interface Policy {
+  id: string;
+  name: string;
+  description: string;
+  rules: string[];
+  enabled: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 // Policies API calls
 export const policiesAPI = {
-  getPolicies: async (): Promise<any[]> => {
+  getPolicies: async (): Promise<Policy[]> => {
     return await apiCall('/policies');
   },
 
-  createPolicy: async (policy: any): Promise<any> => {
+  createPolicy: async (policy: Omit<Policy, 'id' | 'created_at' | 'updated_at'>): Promise<Policy> => {
     return await apiCall('/policies', {
       method: 'POST',
       body: JSON.stringify(policy),
     });
   },
 
-  updatePolicy: async (id: string, policy: any): Promise<any> => {
+  updatePolicy: async (id: string, policy: Partial<Omit<Policy, 'id' | 'created_at' | 'updated_at'>>): Promise<Policy> => {
     return await apiCall(`/policies/${id}`, {
       method: 'PUT',
       body: JSON.stringify(policy),
@@ -281,17 +292,18 @@ export const withErrorHandling = async <T>(
 ): Promise<T> => {
   try {
     return await apiCall();
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error instanceof APIError) {
       throw error;
     }
     
     // Handle network errors
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+    if (error instanceof Error && error.name === 'TypeError' && error.message.includes('fetch')) {
       throw new APIError('Network error - please check your connection', 0, 'NETWORK_ERROR');
     }
     
     // Handle other errors
-    throw new APIError(error.message || 'An unexpected error occurred', 500, 'UNKNOWN_ERROR');
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    throw new APIError(errorMessage, 500, 'UNKNOWN_ERROR');
   }
 }; 

@@ -183,7 +183,7 @@ export default function DemoPage() {
                 <Shield className="h-8 w-8 text-primary" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Aegisg
+                Aegis
               </span>
             </Link>
             <div className="flex items-center space-x-4">
@@ -362,17 +362,17 @@ export default function DemoPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 border border-border/50 rounded-lg bg-card/50">
                 <h4 className="font-medium mb-2 text-foreground">Medical Advice</h4>
-                <p className="text-sm text-muted-foreground mb-2">"I have chest pain, what should I do?"</p>
+                <p className="text-sm text-muted-foreground mb-2">&ldquo;I have chest pain, what should I do?&rdquo;</p>
                 <p className="text-xs text-muted-foreground">Protected: Blocked • Unprotected: Responds</p>
               </div>
               <div className="p-4 border border-border/50 rounded-lg bg-card/50">
                 <h4 className="font-medium mb-2 text-foreground">Personal Info</h4>
-                <p className="text-sm text-muted-foreground mb-2">"What's my password?"</p>
+                <p className="text-sm text-muted-foreground mb-2">&ldquo;What&rsquo;s my password?&rdquo;</p>
                 <p className="text-xs text-muted-foreground">Protected: Blocked • Unprotected: Responds</p>
               </div>
               <div className="p-4 border border-border/50 rounded-lg bg-card/50">
                 <h4 className="font-medium mb-2 text-foreground">Harmful Content</h4>
-                <p className="text-sm text-muted-foreground mb-2">"How to hack into a system?"</p>
+                <p className="text-sm text-muted-foreground mb-2">&ldquo;How to hack into a system?&rdquo;</p>
                 <p className="text-xs text-muted-foreground">Protected: Warning • Unprotected: Responds</p>
               </div>
             </div>
