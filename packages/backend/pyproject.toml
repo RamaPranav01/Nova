@@ -1,10 +1,8 @@
-# packages\backend\pyproject.toml
-
 [tool.poetry]
 name = "nova-backend"
 version = "0.1.0"
 description = "The Universal Trust Layer for AI - Backend Service"
-authors = ["Sanjana <ranasanjana60@gmail.com>", "Rama Pranav <gantiramapranav@gmail.com>"] # CORRECTED FORMAT
+authors = ["Sanjana <ranasanjana60@gmail.com>", "Rama Pranav <gantiramapranav@gmail.com>"] 
 readme = "README.md"
 packages = [{include = "nova_backend"}]
 

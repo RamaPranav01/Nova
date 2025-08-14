@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware # <--- ADD THIS LINE
 from pydantic import BaseModel
 
+from app.api.v1 import gateway, logs, auth
+
 # Define a Pydantic model for your response
 class MessageResponse(BaseModel):
     message: str
@@ -32,6 +34,12 @@ app.add_middleware(
     allow_headers=["*"],            # Allows all headers in cross-origin requests
 )
 # --- END CORS Configuration ---
+
+# It tells the main app to use all the endpoints you defined in your router files.
+print("Including API routers...")
+app.include_router(gateway.router)
+app.include_router(logs.router)
+print("Routers included successfully.")
 
 
 # Define a simple root endpoint
