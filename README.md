@@ -1,41 +1,3 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
 <h1 align="center">Nova - The Universal Trust Layer for AI</h1>
 
 <p align="center">
@@ -53,11 +15,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 </p>
 
 <p align="center">
-  <!-- BADGES: Replace placeholders with actual links -->
+  <!-- BADGES: Replace placeholders with your actual GitHub username and repo name -->
   <img src="https://img.shields.io/badge/Project%20Status-In%20Development-yellowgreen" alt="Project Status"/>
   <img src="https://img.shields.io/badge/License-MIT-blue" alt="License"/>
-  <img src="https://img.shields.io/github/last-commit/your-username/aegis-gateway" alt="Last Commit"/>
-  <img src="https://img.shields.io/github/stars/your-username/aegis-gateway?style=social" alt="GitHub Stars"/>
+  <img src="https://img.shields.io/github/last-commit/RamaPranav01/Nova" alt="Last Commit"/>
+  <img src="https://img.shields.io/github/stars/RamaPranav01/Nova?style=social" alt="GitHub Stars"/>
 </p>
 
 ---
@@ -74,30 +36,27 @@ Nova is architected as a modular platform, allowing us to layer on increasingly 
 
 | Category               | Feature                               | Status      | Description                                                                                             |
 | ---------------------- | ------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------- |
-| 🛡️ **Core Security**     | **Prompt Injection Defense**          | 🚧 V1       | Uses an LLM critic to detect and block malicious prompts designed to hijack the AI.                       |
+| 🛡️ **Core Security**     | **Prompt Injection Defense**          | ✅  V1       | Uses an LLM critic to detect and block malicious prompts designed to hijack the AI.                       |
 |                        | **Dynamic Threat Freezing**           | 🚧 V2       | Learns from new attacks; allows human mods to "freeze" a threat vector for instant future blocking.    |
 |                        | **PII & Data Bleed Detection**        | 🚧 V3       | Scans prompts for sensitive data (PII, custom keywords) to prevent leaks to third-party models.      |
 |                        | **Deepfake & Synthetic Media Scan**   | 🚧 V3       | Integrates specialized APIs to detect AI-generated images and audio with high accuracy.                 |
 | 🌐 **Trust & Reliability** | **Hallucination & Citation Check**    | 🚧 V2       | Verifies factual claims and flags responses with fabricated sources.                                    |
 |                        | **Source Reputation & Rumor Check**   | 🚧 V3       | Checks URLs against reputation services (e.g., NewsGuard) and cross-references claims with live web search results. |
 |                        | **Knowledge Base Grounding (RAG)**      | 🚧 V3       | Ensures AI responses are grounded *only* in user-provided documents for maximum accuracy.                 |
-| 📜 **Governance & Audit** | **Custom Policy Engine**              | 🚧 V1       | Enforces user-defined ethical and brand policies (e.g., "no medical advice") in real-time.            |
+| 📜 **Governance & Audit** | **Custom Policy Engine**              | ✅  V1       | Enforces user-defined ethical and brand policies (e.g., "no medical advice") in real-time.            |
 |                        | **Immutable Audit Logs**              | 🚧 V2       | Creates a cryptographically-chained, tamper-proof log of every transaction for compliance.          |
 | ⚙️ **Performance**       | **Semantic Cache**                    | 🚧 V2       | Drastically reduces cost & latency by serving cached responses for semantically similar prompts.        |
 |                        | **Analytics Dashboard**               | 🚧 V2       | Provides rich visualizations of threats, costs, savings, and performance metrics.                       |
 
-**Deadline:** V1 - Mid August , V2 - Mid September , V3 - Mid October
+**Deadline:** V1 - Mid August ✅ , V2 - Mid September , V3 - Mid October 
 
 ## 🏛️ Architecture Deep-Dive
 
 Nova operates as a high-performance, asynchronous API proxy built on a "multi-critic" architecture. This design allows for parallel processing and defense-in-depth.
 
 <p align="center">
-  *(This is the PERFECT place for a high-quality architecture diagram you create with a tool like Excalidraw or Miro)*
-  <br/>
-  *Image: High-level overview showing User App -> Nova (Inbound/Outbound Checks) -> LLM -> Nova -> User App*
+  <img src="./assets/nova-architecture-diagram.png" alt="Project Nova Architecture Diagram" width="800"/>
 </p>
-
 1.  **Ingestion & Fast Path:** An incoming request is immediately checked against our **Qdrant**-powered Semantic Cache and Threat Vector database. This handles the majority of common requests and known attacks with millisecond latency.
 2.  **Inbound Analysis:** If not cached, the prompt is sanitized and passed to our **Inbound Security Critic** (a `gpt-4-turbo` agent) to analyze intent and structure.
 3.  **LLM Interaction:** The validated prompt is sent to the primary LLM.
@@ -201,4 +160,4 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 <p align="center">
   A project by [Rama Pranav , Sanjana , Tejsai , Shlok]. If you like our work, please ⭐ this repository!
 </p>
->>>>>>> f187eb96961b922cade29ab86f3aa0317789a982
+
