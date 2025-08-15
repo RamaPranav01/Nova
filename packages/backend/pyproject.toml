@@ -3,11 +3,10 @@ name = "nova-backend"
 version = "0.1.0"
 description = "The Universal Trust Layer for AI - Backend Service"
 authors = ["Sanjana <ranasanjana60@gmail.com>", "Rama Pranav <gantiramapranav@gmail.com>"] 
-readme = "README.md"
-packages = [{include = "nova_backend"}]
+packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.12"
+python = ">=3.10, <4.0"
 openai = ">=1.97.1,<2.0.0"
 pydantic = ">=2.11.7,<3.0.0"
 python-dotenv = ">=1.1.1,<2.0.0"
@@ -24,6 +23,8 @@ langchain-openai = "^0.1.15"
 langchain-community = "^0.2.11"
 langchain-core = "^0.2.14"
 tiktoken = "^0.7.0"
+python-jose = {extras = ["cryptography"], version = "^3.5.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"
