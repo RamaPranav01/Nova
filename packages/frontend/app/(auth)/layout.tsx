@@ -1,13 +1,27 @@
-export default function AuthLayout({
+
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+// import "./globals.css";
+import { Toaster } from "sonner";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Nova - AI Trust Layer", 
+  description: "The Universal Trust Layer for AI",
+};
+
+export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4">
-      <div className="w-full max-w-md">
+    <html lang="en" className="dark"> 
+      <body className={inter.className}>
         {children}
-      </div>
-    </div>
+        <Toaster /> 
+      </body>
+    </html>
   );
-} 
+}

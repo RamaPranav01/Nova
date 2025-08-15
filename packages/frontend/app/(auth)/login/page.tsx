@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authAPI } from "@/lib/api";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,18 +15,24 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // TODO: Implement login logic with backend
-    console.log("Login attempt:", { email, password });
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      await authAPI.login(email, password);
+      toast.success("Login successful!");
+      router.push('/dashboard'); // Redirect to the dashboard!
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed. Please check your credentials.");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+    
+  
   };
 
   return (

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authAPI } from "@/lib/api";
+import { toast } from "sonner"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,18 +19,23 @@ export default function SignupPage() {
     confirmPassword: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter(); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // TODO: Implement signup logic with backend
-    console.log("Signup attempt:", formData);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      await authAPI.signup(formData.name, formData.email, formData.password);
+      toast.success("Account created successfully! Please log in.");
+      router.push('/login'); // Redirect to login page after successful signup
+    } catch (error) {
+      console.error("Signup failed:", error);
+      toast.error("Signup failed. This email might already be in use.");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+    
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { APIError } from "@/lib/api"; 
+import { toast } from "sonner";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +31,10 @@ export default function DemoPage() {
   const [isProtectedLoading, setIsProtectedLoading] = useState(false);
   const [isUnprotectedLoading, setIsUnprotectedLoading] = useState(false);
   const [headerOpacity, setHeaderOpacity] = useState(0);
+
+  // Ref for auto-scrolling
+  const protectedChatEndRef = useRef<HTMLDivElement>(null);
+  const unprotectedChatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,88 +67,75 @@ export default function DemoPage() {
     if (!protectedInput.trim()) return;
 
     const userMessage = protectedInput;
+    addMessage(protectedMessages, setProtectedMessages, userMessage, "user");
     setProtectedInput("");
     setIsProtectedLoading(true);
 
-    // Add user message
-    addMessage(protectedMessages, setProtectedMessages, userMessage, "user");
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/demo-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: userMessage, policy: policy }),
+      });
 
-    // Simulate Nova processing
-    setTimeout(() => {
-      // Check for threats based on policy
-      const isThreat = checkForThreats(userMessage, policy);
-
-      if (isThreat.blocked) {
-        addMessage(protectedMessages, setProtectedMessages,
-          "I cannot process this request as it violates our security policies.",
-          "ai", "blocked", isThreat.reason);
-      } else if (isThreat.warning) {
-        addMessage(protectedMessages, setProtectedMessages,
-          "I'll help you with that, but please note this request has been flagged for review.",
-          "ai", "warning", isThreat.reason);
-        // Add the actual AI response
-        setTimeout(() => {
-          addMessage(protectedMessages, setProtectedMessages,
-            generateAIResponse(userMessage), "ai", "success");
-        }, 1000);
-      } else {
-        addMessage(protectedMessages, setProtectedMessages,
-          generateAIResponse(userMessage), "ai", "success");
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
 
+      const data = await response.json(); // This matches your GatewayResponse model
+      
+      let status: "success" | "warning" | "blocked" = "success";
+      if (data.inbound_check.verdict === "MALICIOUS") {
+        status = "blocked";
+      } else if (data.outbound_check.verdict === "FAIL") {
+        status = "warning";
+      }
+
+      addMessage(protectedMessages, setProtectedMessages, data.llm_response, "ai", status, data.outbound_check.reasoning);
+
+    } catch (error) {
+      console.error("Protected chat error:", error);
+      toast.error("Failed to connect to the Nova Gateway.");
+      addMessage(protectedMessages, setProtectedMessages, "Error: Could not reach the Nova service.", "ai", "blocked", "Network or server error");
+    } finally {
       setIsProtectedLoading(false);
-    }, 1500);
+    }
   };
+
 
   const handleUnprotectedSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!unprotectedInput.trim()) return;
 
     const userMessage = unprotectedInput;
+    addMessage(unprotectedMessages, setUnprotectedMessages, userMessage, "user");
     setUnprotectedInput("");
     setIsUnprotectedLoading(true);
 
-    // Add user message
-    addMessage(unprotectedMessages, setUnprotectedMessages, userMessage, "user");
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/direct-chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: userMessage }),
+      });
 
-    // Simulate direct AI response (no protection)
-    setTimeout(() => {
-      addMessage(unprotectedMessages, setUnprotectedMessages,
-        generateAIResponse(userMessage), "ai");
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      addMessage(unprotectedMessages, setUnprotectedMessages, data.response, "ai");
+
+    } catch (error) {
+      console.error("Unprotected chat error:", error);
+      toast.error("Failed to connect to the Direct AI service.");
+      addMessage(unprotectedMessages, setUnprotectedMessages, "Error: Could not reach the AI service.", "ai");
+    } finally {
       setIsUnprotectedLoading(false);
-    }, 1000);
+    }
   };
 
-  const checkForThreats = (message: string, _policy: string): { blocked: boolean; warning: boolean; reason?: string } => {
-    const lowerMessage = message.toLowerCase();
 
-    // Check for medical advice requests
-    if (lowerMessage.includes("medical") || lowerMessage.includes("diagnose") || lowerMessage.includes("treatment")) {
-      return { blocked: true, warning: false, reason: "Medical advice request detected" };
-    }
-
-    // Check for personal information requests
-    if (lowerMessage.includes("password") || lowerMessage.includes("credit card") || lowerMessage.includes("ssn")) {
-      return { blocked: true, warning: false, reason: "Personal information request detected" };
-    }
-
-    // Check for potentially harmful content
-    if (lowerMessage.includes("hack") || lowerMessage.includes("exploit") || lowerMessage.includes("bypass")) {
-      return { blocked: false, warning: true, reason: "Potentially harmful content detected" };
-    }
-
-    return { blocked: false, warning: false };
-  };
-
-  const generateAIResponse = (_message: string): string => {
-    const responses = [
-      "I understand your request. Here's what I can tell you about that topic...",
-      "That's an interesting question! Let me provide you with some helpful information...",
-      "I'd be happy to help you with that. Here's what you should know...",
-      "Based on your question, here's the information you're looking for...",
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
-  };
 
   const getStatusIcon = (status?: string) => {
     switch (status) {

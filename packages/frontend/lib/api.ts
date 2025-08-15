@@ -94,43 +94,58 @@ async function apiCall<T>(
 // Authentication API calls
 export const authAPI = {
   login: async (email: string, password: string): Promise<AuthResponse> => {
-    const response = await apiCall<AuthResponse>('/auth/login', {
+    // FastAPI's standard security uses form data, not JSON, for login.
+    const formData = new URLSearchParams();
+    formData.append('username', email); // The backend expects 'username' for the email field
+    formData.append('password', password);
+
+    // Make the API call without the generic JSON header
+    const response = await fetch(`${API_BASE_URL}/api/v1/login`, {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
     });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Login failed');
+    }
     
-    // Store token
-    localStorage.setItem('nova_token', response.access_token);
-    localStorage.setItem('nova_user', JSON.stringify(response.user));
+    const data: AuthResponse = await response.json();
     
-    return response;
+    // Store token on successful login
+    if (data.access_token) {
+      localStorage.setItem('nova_token', data.access_token);
+    }
+    
+    return data;
   },
 
-  signup: async (name: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await apiCall<AuthResponse>('/auth/signup', {
+  signup: async (name: string, email: string, password: string): Promise<any> => {
+    // Signup uses JSON, so the generic apiCall is fine here.
+    // Dev 1's schema expects `full_name`.
+    return await apiCall<any>('/api/v1/signup', {
       method: 'POST',
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ full_name: name, email, password }),
     });
-    
-    // Store token
-    localStorage.setItem('nova_token', response.access_token);
-    localStorage.setItem('nova_user', JSON.stringify(response.user));
-    
-    return response;
   },
 
   logout: () => {
     localStorage.removeItem('nova_token');
+    // Also remove any stored user info
     localStorage.removeItem('nova_user');
-  },
-
-  getCurrentUser: () => {
-    const userStr = localStorage.getItem('nova_user');
-    return userStr ? JSON.parse(userStr) : null;
+    // Redirect to login page to ensure clean state
+    window.location.href = '/login';
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem('nova_token');
+    // Check if the token exists in local storage
+    if (typeof window !== 'undefined') {
+      return !!localStorage.getItem('nova_token');
+    }
+    return false;
   },
 };
 
