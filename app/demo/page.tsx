@@ -65,7 +65,7 @@ export default function DemoPage() {
     // Add user message
     addMessage(protectedMessages, setProtectedMessages, userMessage, "user");
 
-    // Simulate Aegis processing
+    // Simulate Nova processing
     setTimeout(() => {
       // Check for threats based on policy
       const isThreat = checkForThreats(userMessage, policy);
@@ -183,7 +183,7 @@ export default function DemoPage() {
                 <Shield className="h-8 w-8 text-primary" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Aegis
+              Nova
               </span>
             </Link>
             <div className="flex items-center space-x-4">
@@ -205,7 +205,7 @@ export default function DemoPage() {
               <span>Security Policy Configuration</span>
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Configure the security policies that Aegis will enforce in real-time
+              Configure the security policies that Nova will enforce in real-time
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -231,7 +231,7 @@ export default function DemoPage() {
                 <div className="p-1 rounded bg-green-500/20">
                   <Shield className="h-5 w-5" />
                 </div>
-                <span>Protected with Aegis</span>
+                <span>Protected with Nova</span>
               </CardTitle>
               <CardDescription className="text-green-300/80">
                 Real-time threat detection and policy enforcement
@@ -265,7 +265,7 @@ export default function DemoPage() {
                     <div className="bg-muted/50 rounded-lg p-3 border border-border/50">
                       <div className="flex items-center space-x-2">
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-                        <span className="text-sm text-muted-foreground">Aegis is analyzing...</span>
+                        <span className="text-sm text-muted-foreground">Nova is analyzing...</span>
                       </div>
                     </div>
                   </div>

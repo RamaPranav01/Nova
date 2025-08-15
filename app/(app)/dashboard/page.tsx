@@ -2,11 +2,11 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  Shield, 
-  AlertTriangle, 
-  CheckCircle, 
-  Clock, 
+import {
+  Shield,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
   TrendingUp,
   DollarSign,
   Activity,
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                 <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg bg-card/50 border border-border/50">
                   <div className={`
                     w-2 h-2 rounded-full mt-2 flex-shrink-0
-                    ${activity.severity === 'high' ? 'bg-destructive' : 
+                    ${activity.severity === 'high' ? 'bg-destructive' :
                       activity.severity === 'medium' ? 'bg-yellow-500' : 'bg-green-500'}
                   `} />
                   <div className="flex-1 min-w-0">

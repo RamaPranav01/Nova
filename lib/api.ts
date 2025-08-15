@@ -69,7 +69,7 @@ async function apiCall<T>(
   };
 
   // Add auth token if available
-  const token = localStorage.getItem('aegis_token');
+  const token = localStorage.getItem('nova_token');
   if (token) {
     config.headers = {
       ...config.headers,
@@ -100,8 +100,8 @@ export const authAPI = {
     });
     
     // Store token
-    localStorage.setItem('aegis_token', response.access_token);
-    localStorage.setItem('aegis_user', JSON.stringify(response.user));
+    localStorage.setItem('nova_token', response.access_token);
+    localStorage.setItem('nova_user', JSON.stringify(response.user));
     
     return response;
   },
@@ -113,39 +113,39 @@ export const authAPI = {
     });
     
     // Store token
-    localStorage.setItem('aegis_token', response.access_token);
-    localStorage.setItem('aegis_user', JSON.stringify(response.user));
+    localStorage.setItem('nova_token', response.access_token);
+    localStorage.setItem('nova_user', JSON.stringify(response.user));
     
     return response;
   },
 
   logout: () => {
-    localStorage.removeItem('aegis_token');
-    localStorage.removeItem('aegis_user');
+    localStorage.removeItem('nova_token');
+    localStorage.removeItem('nova_user');
   },
 
   getCurrentUser: () => {
-    const userStr = localStorage.getItem('aegis_user');
+    const userStr = localStorage.getItem('nova_user');
     return userStr ? JSON.parse(userStr) : null;
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem('aegis_token');
+    return !!localStorage.getItem('nova_token');
   },
 };
 
 // Chat API calls
 export const chatAPI = {
   sendMessage: async (request: ChatRequest): Promise<ChatResponse> => {
-    return await apiCall<ChatResponse>('/aegis-chat', {
+    return await apiCall<ChatResponse>('/nova-chat', {
       method: 'POST',
       body: JSON.stringify(request),
     });
   },
 
-  // For the demo page - simulate Aegis processing
+  // For the demo page - simulate Nova processing
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  simulateAegisChat: async (message: string, _policy: string): Promise<ChatResponse> => {
+  simulateNovaChat: async (message: string, _policy: string): Promise<ChatResponse> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     

@@ -36,7 +36,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Aegis</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Nova</span>
             </div>
             <nav className="flex items-center space-x-6">
               <Link href="/demo" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -57,13 +57,13 @@ export default function HomePage() {
       <section className="py-20 px-6">
         <div className="container mx-auto text-center">
           <h1 className="text-8xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent mb-8 leading-tight pb-2">
-            Aegis
+          Nova
           </h1>
           <h2 className="text-4xl font-bold text-foreground mb-6">
             The Universal Trust Layer for AI
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Aegis is an intelligent, real-time gateway that acts as a universal firewall and quality control system for AI models.
+          Nova is an intelligent, real-time gateway that acts as a universal firewall and quality control system for AI models.
             Protect your applications from threats, enforce policies, and ensure accuracy.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -85,7 +85,7 @@ export default function HomePage() {
       <section className="py-20 px-6 bg-card/30">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-foreground">
-            Why Choose Aegis?
+            Why Choose Nova?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card>
@@ -125,7 +125,7 @@ export default function HomePage() {
       <section className="py-20 px-6">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6 text-foreground">
-            See Aegis in Action
+            See Nova in Action
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Experience the power of our split-screen demo showing protected vs unprotected AI interactions.
@@ -134,7 +134,7 @@ export default function HomePage() {
             <CardHeader>
               <CardTitle>Protected vs Unprotected Demo</CardTitle>
               <CardDescription>
-                Watch how Aegis blocks threats while allowing legitimate requests through
+                Watch how Nova blocks threats while allowing legitimate requests through
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Shield className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Aegis</span>
+            <span className="text-lg font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Nova</span>
           </div>
           <p className="text-muted-foreground">
             The Universal Trust Layer for AI • Built for the OpenAI x NxtWave Hackathon

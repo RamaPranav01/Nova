@@ -58,7 +58,7 @@ export default function AppLayout({
           <div className="flex h-16 items-center justify-between px-6 border-b border-border">
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Shield className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Aegis</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Nova</span>
             </Link>
             <Button
               variant="ghost"

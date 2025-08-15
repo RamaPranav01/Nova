@@ -46,14 +46,14 @@ export default function SignupPage() {
             <Shield className="h-8 w-8 text-primary" />
           </div>
           <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Aegis
+          Nova
           </span>
         </Link>
       </div>
       
       <Card className="w-full gradient-card border-primary/20">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center text-foreground">Join Aegis</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center text-foreground">Join Nova</CardTitle>
           <CardDescription className="text-center text-muted-foreground">
             Create your account to start protecting your AI applications
           </CardDescription>
