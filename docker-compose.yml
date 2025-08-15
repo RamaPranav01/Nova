@@ -1,0 +1,84 @@
+# docker-compose.yml
+# Located at the root of your project (Nova/)
+# For local development of Project Nova (Aegis Backend)
+
+# The 'version' attribute is now removed, as it's obsolete in Docker Compose V2.
+
+services:
+  # 1. The PostgreSQL Database Service (Our "Ingredient Inventory Ledger")
+  # This service provides a relational database for storing structured application data.
+  postgres:
+    image: postgres:15-alpine # Specifies the Docker image to use. `postgres:15-alpine` is a lightweight PostgreSQL version 15 image.
+    restart: always             # Ensures the container restarts if it stops (e.g., due to an error or Docker daemon restart).
+    environment:                # Sets environment variables inside the PostgreSQL container to configure it on startup.
+      POSTGRES_DB: nova_db      # The name of the database that will be created automatically.
+      POSTGRES_USER: novausr    # The username for accessing the database.
+      POSTGRES_PASSWORD: novapassword # The password for the database user.
+                                # WARNING: This is for LOCAL DEVELOPMENT ONLY. Use strong, secure methods for production passwords!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Mounts a named volume (`postgres_data`) to the PostgreSQL data directory.
+                                                 # This ensures your database data persists even if the container is removed or updated.
+                                                 # `postgres_data` is declared at the root `volumes` section below.
+    ports:
+      - "5432:5432"             # Maps host port 5432 to container port 5432.
+                                # This allows you to connect to the PostgreSQL database from your host machine via `localhost:5432`.
+    healthcheck:                # Defines a check to determine if the service is healthy and ready to accept connections.
+      test: ["CMD-SHELL", "pg_isready -U novausr -d nova_db"] # Command to run inside the container to check health.
+      interval: 5s              # How often (in seconds) to run the health check.
+      timeout: 5s               # How long (in seconds) to wait for a response before considering the check failed.
+      retries: 5                # How many consecutive failures before considering the service "unhealthy".
+
+  # 2. The Qdrant Vector Database Service (Our "Super-Fast Coffee Bean Sorter")
+  # This service provides a vector database for efficient similarity search and AI features.
+  qdrant:
+    image: qdrant/qdrant:latest # Specifies the Docker image for Qdrant, using the latest stable version.
+    restart: always             # Ensures the container restarts if it stops.
+    volumes:
+      - qdrant_data:/qdrant/storage # Mounts a named volume (`qdrant_data`) to Qdrant's storage directory.
+                                    # This persists your vector embeddings and other Qdrant data.
+    ports:
+      - "6333:6333"             # Maps host port 6333 to container port 6333 (Qdrant's HTTP API/dashboard port).
+      - "6334:6334"             # Maps host port 6334 to container port 6334 (Qdrant's gRPC API port).
+    #healthcheck:                # Defines a health check for Qdrant.
+      #test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"] # Uses `curl` to hit Qdrant's health endpoint.
+      #interval: 10s             # Check every 10 seconds
+      #timeout: 15s              # Allow 15 seconds for the check to complete (Increased from 10s)
+      #retries: 10               # Allow 10 retries before considering unhealthy
+      #start_period: 120s        # *** SIGNIFICANTLY INCREASED to 120 seconds (2 minutes) ***
+
+  # 3. The Backend Application Service (Our "Coffee-Making Machine")
+  # This service runs your FastAPI application, which depends on PostgreSQL and Qdrant.
+  backend:
+    build:                      # Instructs Docker Compose to build this service's image from a Dockerfile.
+      context: ./packages/backend # Specifies the build context: the directory containing the Dockerfile and application code.
+                                # Docker can only access files within this `context` during the build process.
+      dockerfile: Dockerfile    # The name of the Dockerfile within the `context` directory.
+    restart: always             # Ensures the container restarts if it stops.
+    env_file:                   # <--- THIS LINE IS ADDED BACK!
+      - ./packages/backend/.env # Specifies the path to your .env file.
+    ports:
+      - "8000:8000"             # Maps host port 8000 to container port 8000.
+                                # This is the port your FastAPI application will be accessible on from your host (e.g., `http://localhost:8000`).
+    depends_on:                 # Defines dependencies, ensuring services start in a specific order and are healthy.
+      postgres:                 # The backend service depends on postgres.
+        condition: service_healthy # Backend will only start after postgres's healthcheck passes.
+      qdrant:                   # The backend service also depends on qdrant.
+        condition: service_started # Backend will only start after qdrant's healthcheck passes.
+    volumes:
+      - ./packages/backend:/app # This is a **bind mount** for live development.
+                                # `./packages/backend`: Your actual backend code directory on your host machine.
+                                # `/app`: The directory inside the container where your code will be mounted.
+                                # Any changes you save to your code on your host will instantly reflect in the running container.
+    command: ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] # The command to execute when the container starts.
+                                                                           # `uvicorn`: The ASGI server.
+                                                                           # `main:app`: Tells Uvicorn to look for an 'app' instance in 'main.py'
+                                                                           #             (because `main.py` is directly under `/app` within the container).
+                                                                           # `--host 0.0.0.0`: Makes the app accessible from outside the container.
+                                                                           # `--port 8000`: Specifies the internal port Uvicorn listens on.
+
+# Docker Volumes (Our "Secure Storage Rooms" for Data)
+# This top-level section declares the named volumes used by services.
+# Docker manages the actual physical location of these volumes on your host system.
+volumes:
+  postgres_data: # Declares the named volume for PostgreSQL data.
+  qdrant_data:   # Declares the named volume for Qdrant data.
