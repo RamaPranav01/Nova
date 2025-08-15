@@ -25,6 +25,7 @@ langchain-core = "^0.2.14"
 tiktoken = "^0.7.0"
 python-jose = {extras = ["cryptography"], version = "^3.5.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+alembic = "^1.13.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"

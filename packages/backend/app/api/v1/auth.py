@@ -1,42 +1,41 @@
+# File: packages/backend/app/api/v1/auth.py
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from app import crud, models, schemas
-from app.api.v1 import deps # Not relative
+# --- CORRECTED, SPECIFIC IMPORTS ---
+from app.crud import crud_user
+from app.models.user import User as PydanticUser, UserCreate
+from app.models.token import Token
+from app.schemas.user import User as SQLAlchemyUser
+from app.api.v1 import deps
 from app.core import security
+# ------------------------------------
 
 router = APIRouter()
 
-
-@router.post("/signup", response_model=models.User, status_code=status.HTTP_201_CREATED)
+@router.post("/signup", response_model=PydanticUser, status_code=status.HTTP_201_CREATED)
 def register_user(
     *,
     db: Session = Depends(deps.get_db),
-    user_in: models.UserCreate,
-) -> schemas.User:
-    """
-    Create new user.
-    """
-    user = crud.crud_user.get_user_by_email(db, email=user_in.email)
+    user_in: UserCreate,
+) -> SQLAlchemyUser:
+    user = crud_user.get_user_by_email(db, email=user_in.email)
     if user:
         raise HTTPException(
             status_code=400,
             detail="A user with this email already exists in the system.",
         )
-    user = crud.crud_user.create_user(db=db, obj_in=user_in)
+    user = crud_user.create_user(db=db, obj_in=user_in)
     return user
 
 
-@router.post("/login", response_model=models.Token)
+@router.post("/login", response_model=Token)
 def login_for_access_token(
     db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ):
-    """
-    OAuth2 compatible token login, get an access token for future requests.
-    The client must send a POST request with "username" and "password" in a form-data body.
-    """
-    user = crud.crud_user.get_user_by_email(db, email=form_data.username)
+    user = crud_user.get_user_by_email(db, email=form_data.username)
     if not user or not security.verify_password(
         form_data.password, user.hashed_password
     ):
@@ -46,9 +45,7 @@ def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # The subject of the token will be the user's email.
-    # This is more robust than using the user's ID.
-    access_token = security.create_access_token(subject=user.email)
+    access_token = security.create_access_token(subject=user.id)
     return {
         "access_token": access_token,
         "token_type": "bearer",

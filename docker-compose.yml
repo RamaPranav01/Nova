@@ -56,6 +56,8 @@ services:
     restart: always             # Ensures the container restarts if it stops.
     env_file:                   # <--- THIS LINE IS ADDED BACK!
       - ./packages/backend/.env # Specifies the path to your .env file.
+    environment:
+      - PYTHONPATH=/app
     ports:
       - "8000:8000"             # Maps host port 8000 to container port 8000.
                                 # This is the port your FastAPI application will be accessible on from your host (e.g., `http://localhost:8000`).
@@ -69,7 +71,7 @@ services:
                                 # `./packages/backend`: Your actual backend code directory on your host machine.
                                 # `/app`: The directory inside the container where your code will be mounted.
                                 # Any changes you save to your code on your host will instantly reflect in the running container.
-    command: ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] # The command to execute when the container starts.
+    command: ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] # The command to execute when the container starts.
                                                                            # `uvicorn`: The ASGI server.
                                                                            # `main:app`: Tells Uvicorn to look for an 'app' instance in 'main.py'
                                                                            #             (because `main.py` is directly under `/app` within the container).
